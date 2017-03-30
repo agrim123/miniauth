@@ -1,6 +1,9 @@
 {
   "name": "node-authentication",
   "main": "server.js",
+  "scripts": {
+    "watch": "nodemon server.js"
+  },
   "dependencies" : {
     "express": "~4.14.0",
     "ejs": "~2.5.2",
