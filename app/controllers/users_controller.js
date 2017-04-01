@@ -1,12 +1,12 @@
 
 exports.profile = function(req, res) {
-	res.render('profile.ejs', {
+	res.render('users/show.ejs', {
 		user : req.user
 	});
 }
 
 exports.new = function(req, res) {
-	res.render('signup.ejs', { message: req.flash('signupMessage') });
+	res.render('users/new.ejs', { message: req.flash('signupMessage') });
 };
 
 exports.unlink_local = function(req,res) {
