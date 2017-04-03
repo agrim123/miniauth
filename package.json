@@ -2,7 +2,8 @@
   "name": "node-authentication",
   "main": "server.js",
   "scripts": {
-    "watch": "nodemon server.js"
+    "watch": "nodemon server.js",
+    "test": "mocha --reporter spec --bail --recursive test/"
   },
   "dependencies": {
     "bcrypt-nodejs": "latest",
@@ -22,5 +23,20 @@
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.4",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify": "0.0.15",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^2.1.0",
+    "gulp-uglify": "^2.1.2",
+    "mocha": "^3.2.0",
+    "passport-stub": "^1.1.1",
+    "rimraf": "^2.6.1",
+    "should": "^11.2.1",
+    "supertest": "^3.0.0"
   }
 }
