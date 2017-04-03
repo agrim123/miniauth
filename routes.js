@@ -1,21 +1,23 @@
 var isLoggedIn = require('./app/middlewares/login_middleware.js');
+
+var index = require('./app/controllers/index_controller.js');
 var users = require('./app/controllers/users_controller.js');
 var sessions = require('./app/controllers/sessions_controller.js');
 
 module.exports = function(app, passport) {
 
+var accounts = require('./app/controllers/accounts_controller.js')(passport);
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('index.ejs');
-    });
+    app.get('/', index.index);
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, users.profile);
 
     // LOGOUT ==============================
-    app.get('/logout', sessions.logout);
+    app.get('/logout', sessions.destroy);
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -24,87 +26,57 @@ module.exports = function(app, passport) {
     // locally --------------------------------
         // LOGIN ===============================
         // show the login form
-        app.get('/login', sessions.login);
+        app.get('/login', sessions.new);
 
         // process the login form
-        app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+        app.post('/login', accounts.login);
 
         // SIGNUP =================================
         // show the signup form
         app.get('/signup', users.new);
 
         // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+        app.post('/signup', accounts.signup);
 
     // facebook -------------------------------
 
         // send to facebook to do the authentication
-        app.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email', 'public_profile'] }));
+        app.get('/auth/facebook', accounts.facebook_login);
 
         // handle the callback after facebook has authenticated the user
-        app.get('/auth/facebook/callback',
-            passport.authenticate('facebook', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
+        app.get('/auth/facebook/callback', accounts.facebook_callback);
 
     // google ---------------------------------
 
         // send to google to do the authentication
-        app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+        app.get('/auth/google', accounts.google_login);
 
         // the callback after google has authenticated the user
-        app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
+        app.get('/auth/google/callback', accounts.facebook_callback);
 
 // =============================================================================
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
 // =============================================================================
 
     // locally --------------------------------
-        app.get('/connect/local', function(req, res) {
-            res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-        });
-        app.post('/connect/local', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
+        app.get('/connect/local', accounts.show_local);
+        app.post('/connect/local', accounts.connect_local);
 
     // facebook -------------------------------
 
         // send to facebook to do the authentication
-        app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
+        app.get('/connect/facebook', accounts.connect_facebook);
 
         // handle the callback after facebook has authorized the user
-        app.get('/connect/facebook/callback',
-            passport.authorize('facebook', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
+        app.get('/connect/facebook/callback', accounts.connect_facebook_callback);
 
     // google ---------------------------------
 
         // send to google to do the authentication
-        app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
+        app.get('/connect/google', accounts.connect_google);
 
         // the callback after google has authorized the user
-        app.get('/connect/google/callback',
-            passport.authorize('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
+        app.get('/connect/google/callback', accounts.connect_google_callback);
 
 // =============================================================================
 // UNLINK ACCOUNTS =============================================================
