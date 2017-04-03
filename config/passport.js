@@ -95,7 +95,7 @@ module.exports = function(passport) {
                         var newUser            = new User();
 
                         newUser.local.email    = email;
-                        newUser.local.password = newUser.generateHash(password);
+                        newUser.local.password = newUser.hashPassword(password);
 
                         newUser.save(function(err) {
                             if (err)
@@ -120,7 +120,7 @@ module.exports = function(passport) {
                     } else {
                         var user = req.user;
                         user.local.email = email;
-                        user.local.password = user.generateHash(password);
+                        user.local.password = user.hashPassword(password);
                         user.save(function (err) {
                             if (err)
                                 return done(err);
