@@ -1,8 +1,12 @@
-exports.login = function(req, res) {
-	res.render('login.ejs', { message: req.flash('loginMessage') });
+exports.new = function(req, res) {
+	res.render('sessions/new.ejs', { message: req.flash('loginMessage') });
 };
 
-exports.logout = function(req, res) {
+exports.destroy = function(req, res) {
 	req.logout();
 	res.redirect('/');
 };
+
+exports.create = function(req,res) {
+
+}
