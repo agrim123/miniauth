@@ -1,10 +1,7 @@
-'use strict';
-
+/*'use strict';
 
 // Modified from https://github.com/elliotf/mocha-mongoose
 
-
-var config = require('../config/database.js');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -25,7 +22,7 @@ beforeEach(function (done) {
 
 
   function reconnect() {
-    mongoose.connect(config.db.test, function (err) {
+    mongoose.connect(process.env.TEST_DATABASE_URL, function (err) {
       if (err) {
         throw err;
       }
@@ -56,3 +53,4 @@ afterEach(function (done) {
   mongoose.disconnect();
   return done();
 });
+*/

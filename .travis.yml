@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - "4.8"
+  - "5.12"
+  - "6.10"
+  - "7.7"
+sudo: false
+services:
+  - mongodb
+cache:
+  directories:
+    - node_modules
+before_install:
+  # Setup Node.js version-specific dependencies
+  - "test $(echo $TRAVIS_NODE_VERSION | cut -d. -f1) -ge 4 || npm rm --save-dev eslint eslint-config-standard eslint-plugin-promise eslint-plugin-standard"
+
+  # Update Node.js modules
+  - "test ! -d node_modules || npm prune"
+  - "test ! -d node_modules || npm rebuild"
+before_script:
+  - sleep 15
+  - npm install -g gulp
+script:
+  - gulp
+  - "npm run test-ci"
+env:
+  - PORT=3000 FACEBOOK_APP_ID=123456 FACEBOOK_APP_SECRET=fbsecret GOOGLE_APP_ID=123456 GOOGLE_APP_SECRET=googlesecret SESSION_SECRET=secret TEST_DATABASE_URL=mongodb://127.0.0.1/passport_test
