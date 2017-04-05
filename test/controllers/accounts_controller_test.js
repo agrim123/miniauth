@@ -1,5 +1,7 @@
 'use strict'
 
+var utils = require('../utils')
+
 var User = require('../../app/models/user.js').User
 
 var path = require('path')
@@ -20,8 +22,8 @@ describe('Passport: routes', function () {
     var passwordHash = users_helper.hashPassword(realPassword)
     User.create({
       local:{
-        email:emailAddress,
-        password:passwordHash
+        email: emailAddress,
+        password: passwordHash
       }
     }, function (err,user) {
       done()
@@ -30,7 +32,7 @@ describe('Passport: routes', function () {
 
   describe('Local Routes', function () {
 
-    it('should redirect to "/profile" if authentication is successfull', function (done) {
+    it('should redirect to /profile if authentication is successfull', function (done) {
       var post = {
         email: 'test@test.com',
         password: realPassword
