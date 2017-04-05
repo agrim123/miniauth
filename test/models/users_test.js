@@ -8,7 +8,7 @@ var bcrypt   = require('bcrypt-nodejs')
 // import our User mongoose model
 var User = require('../../app/models/user.js').User
 
-var users_helper  =require('../../app/helpers/users_helper.js')
+var users_helper  = require('../../app/helpers/users_helper.js')
 
 describe('Users: models', function () {
 
