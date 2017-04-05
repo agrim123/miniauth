@@ -10,7 +10,7 @@ cache:
     - node_modules
 before_install:
   # Setup Node.js version-specific dependencies
-  - "test $(echo $TRAVIS_NODE_VERSION | cut -d. -f1) -ge 4"
+  - "test $(echo $TRAVIS_NODE_VERSION | cut -d. -f1) -ge 4 || npm rm --save-dev eslint eslint-config-standard eslint-plugin-promise eslint-plugin-standard"
 
   # Update Node.js modules
   - "test ! -d node_modules || npm prune"
@@ -21,5 +21,6 @@ before_script:
 script:
   - gulp
   - "npm run test-ci"
+  - "test -z $(npm -ps ls eslint) || npm run lint"
 env:
   - PORT=3000 FACEBOOK_APP_ID=123456 FACEBOOK_APP_SECRET=fbsecret GOOGLE_APP_ID=123456 GOOGLE_APP_SECRET=googlesecret SESSION_SECRET=secret TEST_DATABASE_URL=mongodb://127.0.0.1/miniauth_test NODE_ENV=test

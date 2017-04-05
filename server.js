@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise
 var configDB = require('./config/database.js')
 
 // configuration ===============================================================
-if(process.env.NODE_ENV != 'test') {
+if (process.env.NODE_ENV !== 'test') {
   mongoose.connect(configDB.db)
 }
 
@@ -40,13 +40,13 @@ app.use(flash())
 
 require('./routes.js')(app, passport)
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found')
   err.status = 404
   next(err)
 })
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
   res.status(err.status || 500)

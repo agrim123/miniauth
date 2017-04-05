@@ -58,16 +58,8 @@ module.exports = (passport) => {
       var user = req.user
       user.local.email = undefined
       user.local.password = undefined
-      user.save( (err) => {
-        res.redirect('/profile')
-      })
-    },
-
-    unlink_local: (req, res) => {
-      var user = req.user
-      user.local.email = undefined
-      user.local.password = undefined
-      user.save( (err) => {
+      user.save((err) => {
+        if (err) throw err
         res.redirect('/profile')
       })
     },
@@ -75,7 +67,8 @@ module.exports = (passport) => {
     unlink_google: (req, res) => {
       var user = req.user
       user.google.token = undefined
-      user.save( (err) => {
+      user.save((err) => {
+        if (err) throw err
         res.redirect('/profile')
       })
     },
@@ -83,7 +76,8 @@ module.exports = (passport) => {
     unlink_facebook: (req, res) => {
       var user = req.user
       user.facebook.token = undefined
-      user.save( (err) => {
+      user.save((err) => {
+        if (err) throw err
         res.redirect('/profile')
       })
     }

@@ -9,13 +9,13 @@ var User = require('../app/models/user').User
 // load the auth variables
 var configAuth = require('./auth') // use this one for testing
 
-module.exports = function (passport) {
-  passport.serializeUser(function (user, done) {
+module.exports = (passport) => {
+  passport.serializeUser((user, done) => {
     done(null, user.id)
   })
 
-  passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
       done(err, user)
     })
   })
@@ -27,13 +27,12 @@ module.exports = function (passport) {
     passwordField: 'password',
     passReqToCallback: true
   },
-  function (req, email, password, done) {
+  (req, email, password, done) => {
     if (email) {
       email = email.toLowerCase() // Use lower-case e-mails to avoid case-sensitive e-mail matching
     }
-    process.nextTick(function () {
-      console.log(User.schema.obj.local);
-      User.findOne({ 'local.email': email }, function (err, user) {
+    process.nextTick(() => {
+      User.findOne({ 'local.email': email }, (err, user) => {
         if (err) {
           return done(err)
         }
@@ -42,8 +41,7 @@ module.exports = function (passport) {
         }
         if (!user.validPassword(password)) {
           return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'))
-        }
-        else {
+        } else {
           return done(null, user)
         }
       })
@@ -58,15 +56,15 @@ module.exports = function (passport) {
     passwordField: 'password',
     passReqToCallback: true
   },
-  function (req, email, password, done) {
+  (req, email, password, done) => {
     if (email) {
       email = email.toLowerCase() // Use lower-case e-mails to avoid case-sensitive e-mail matching
     }
     // asynchronous
-    process.nextTick(function () {
+    process.nextTick(() => {
       // if the user is not already logged in:
       if (!req.user) {
-        User.findOne({ 'local.email': email }, function (err, user) {
+        User.findOne({ 'local.email': email }, (err, user) => {
           // if there are any errors, return the error
           if (err) {
             return done(err)
@@ -79,7 +77,7 @@ module.exports = function (passport) {
             var newUser = new User()
             newUser.local.email = email
             newUser.local.password = newUser.hashPassword(password)
-            newUser.save(function (err) {
+            newUser.save((err) => {
               if (err) {
                 return done(err)
               }
@@ -91,7 +89,7 @@ module.exports = function (passport) {
       } else if (!req.user.local.email) {
         // ...presumably they're trying to connect a local account
         // BUT let's check if the email used to connect a local account is being used by another user
-        User.findOne({ 'local.email': email }, function (err, user) {
+        User.findOne({ 'local.email': email }, (err, user) => {
           if (err) {
             return done(err)
           }
@@ -102,7 +100,7 @@ module.exports = function (passport) {
             user = req.user
             user.local.email = email
             user.local.password = user.hashPassword(password)
-            user.save(function (err) {
+            user.save((err) => {
               if (err) {
                 return done(err)
               }
@@ -123,12 +121,11 @@ module.exports = function (passport) {
   var fbStrategy = configAuth.facebookAuth
   fbStrategy.passReqToCallback = true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
   passport.use(new FacebookStrategy(fbStrategy,
-    function (req, token, refreshToken, profile, done) {
+    (req, token, refreshToken, profile, done) => {
       // asynchronous
-      process.nextTick(function () {
-        // check if the user is already logged in
+      process.nextTick(() => {
         if (!req.user) {
-          User.findOne({ 'facebook.id': profile.id }, function (err, user) {
+          User.findOne({ 'facebook.id': profile.id }, (err, user) => {
             if (err) {
               return done(err)
             }
@@ -138,7 +135,7 @@ module.exports = function (passport) {
                 user.facebook.token = token
                 user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName
                 user.facebook.email = (profile.emails[0].value || '').toLowerCase()
-                user.save(function (err) {
+                user.save((err) => {
                   if (err) {
                     return done(err)
                   }
@@ -155,7 +152,7 @@ module.exports = function (passport) {
               newUser.facebook.photo = profile.photos[0].value || ''
               newUser.facebook.gender = profile.gender
               newUser.facebook.link = profile.profileUrl
-              newUser.save(function (err) {
+              newUser.save((err) => {
                 if (err) {
                   return done(err)
                 }
@@ -171,7 +168,7 @@ module.exports = function (passport) {
           user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName
           user.facebook.email = (profile.emails[0].value || '').toLowerCase()
 
-          user.save(function (err) {
+          user.save((err) => {
             if (err) {
               return done(err)
             }
@@ -190,12 +187,12 @@ module.exports = function (passport) {
     callbackURL: configAuth.googleAuth.callbackURL,
     passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
   },
-  function (req, token, refreshToken, profile, done) {
+  (req, token, refreshToken, profile, done) => {
     // asynchronous
-    process.nextTick(function () {
+    process.nextTick(() => {
       // check if the user is already logged in
       if (!req.user) {
-        User.findOne({ 'google.id': profile.id }, function (err, user) {
+        User.findOne({ 'google.id': profile.id }, (err, user) => {
           if (err) {
             return done(err)
           }
@@ -205,7 +202,7 @@ module.exports = function (passport) {
               user.google.token = token
               user.google.name = profile.displayName
               user.google.email = (profile.emails[0].value || '').toLowerCase() // pull the first email
-              user.save(function (err) {
+              user.save((err) => {
                 if (err) {
                   return done(err)
                 }
@@ -219,7 +216,7 @@ module.exports = function (passport) {
             newUser.google.token = token
             newUser.google.name = profile.displayName
             newUser.google.email = (profile.emails[0].value || '').toLowerCase() // pull the first email
-            newUser.save(function (err) {
+            newUser.save((err) => {
               if (err) {
                 return done(err)
               }
@@ -233,7 +230,7 @@ module.exports = function (passport) {
         user.google.token = token
         user.google.name = profile.displayName
         user.google.email = (profile.emails[0].value || '').toLowerCase()
-        user.save(function (err) {
+        user.save((err) => {
           if (err) {
             return done(err)
           }
