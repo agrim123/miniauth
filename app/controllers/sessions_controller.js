@@ -1,12 +1,18 @@
-exports.new = function (req, res) {
-  res.render('sessions/new.ejs', { message: req.flash('loginMessage') })
-}
+module.exports = (passport) => {
+  return {
+    new: (req, res) => {
+      res.render('sessions/new.ejs', { message: req.flash('loginMessage') })
+    },
 
-exports.destroy = function (req, res) {
-  req.logout()
-  res.redirect('/')
-}
+    create: passport.authenticate('local-login', {
+      successRedirect: '/profile',
+      failureRedirect: '/login',
+      failureFlash: true
+    }),
 
-exports.create = function (req, res) {
-
+    destroy: (req, res) => {
+      req.logout()
+      res.redirect('/')
+    }
+  }
 }

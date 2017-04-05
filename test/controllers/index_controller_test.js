@@ -12,7 +12,7 @@ describe('GET /', () => {
 describe('GET /random-url', () => {
   it('should return 404', (done) => {
     request(app)
-      .get('/reset')
+      .get('/random')
       .expect(404, done)
   })
 })
