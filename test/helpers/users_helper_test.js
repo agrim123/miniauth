@@ -1,13 +1,9 @@
 'use strict';
 
-
-// import the moongoose helper utilities
-var utils = require('../utils');
 var should = require('should');
 var bcrypt   = require('bcrypt-nodejs');
 
 var users_helper  =require('../../app/helpers/users_helper.js');
-
 
 describe('Users: helpers', function () {
 
@@ -46,5 +42,4 @@ describe('Users: helpers', function () {
       done();
     });
   });
-
 });

@@ -1,12 +1,9 @@
 'use strict';
 
 
-// Modified from https://github.com/elliotf/mocha-mongoose
+//  Modified from https://github.com/elliotf/mocha-mongoose
 
-
-var config = require('../config/database.js');
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 
 // ensure the NODE_ENV is set to 'test'
 // this is helpful when you would like to change behavior when testing
@@ -18,41 +15,27 @@ beforeEach(function (done) {
 
   function clearDB() {
     for (var i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove();
+      mongoose.connection.collections[i].remove(function() {});
     }
     return done();
   }
 
 
-  function reconnect() {
-    mongoose.connect(config.db.test, function (err) {
+  if (mongoose.connection.readyState === 0) {
+    mongoose.connect('mongodb://127.0.0.1/miniauth_test', function (err) {
       if (err) {
         throw err;
       }
       return clearDB();
     });
+  } else {
+    return clearDB();
   }
-
-
-  function checkState() {
-    switch (mongoose.connection.readyState) {
-    case 0:
-      reconnect();
-      break;
-    case 1:
-      clearDB();
-      break;
-    default:
-      process.nextTick(checkState);
-    }
-  }
-
-
-  checkState();
 });
 
 
-afterEach(function (done) {
+after(function (done) {
+  mongoose.connection.db.dropDatabase();
   mongoose.disconnect();
   return done();
 });

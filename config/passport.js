@@ -4,7 +4,7 @@ var FacebookStrategy = require('passport-facebook').Strategy
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 // load up the user model
-var User = require('../app/models/user')
+var User = require('../app/models/user').User
 
 // load the auth variables
 var configAuth = require('./auth') // use this one for testing
@@ -32,6 +32,7 @@ module.exports = function (passport) {
       email = email.toLowerCase() // Use lower-case e-mails to avoid case-sensitive e-mail matching
     }
     process.nextTick(function () {
+      console.log(User.schema.obj.local);
       User.findOne({ 'local.email': email }, function (err, user) {
         if (err) {
           return done(err)

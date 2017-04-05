@@ -1,10 +1,6 @@
 'use strict'
 
-var utils = require('../utils')
-var mongo = require('mocha-mongo')('mongodb://127.0.0.1/test');
-var ready = mongo.ready();
-
-var User = require('../../app/models/user.js')
+var User = require('../../app/models/user.js').User
 
 var path = require('path')
 var file = path.resolve('server.js')
@@ -16,20 +12,19 @@ var users_helper  =require('../../app/helpers/users_helper.js')
 
 describe('Passport: routes', function () {
 
-  it('should prepare the db', ready(function(db, done) {
-    db.collection('test').insert({hello: 'world'}, done);
-  }));
-
   var baseUrl = '/login'
-  var emailAddress = 'berry@example.com'
+  var emailAddress = 'test@test.com'
   var realPassword = 'secret1'
 
   beforeEach(function (done) {
     var passwordHash = users_helper.hashPassword(realPassword)
-    var newUser = new User
-    newUser.local.email = emailAddress
-    newUser.local.password = passwordHash
-    newUser.save(function (err) {
+    User.create({
+      local:{
+        email:emailAddress,
+        password:passwordHash
+      }
+    }, function (err,user) {
+      console.log(user)
       done()
     })
   })
@@ -38,7 +33,7 @@ describe('Passport: routes', function () {
 
     it('should redirect to "/profile" if authentication is successfull', function (done) {
       var post = {
-        email: 'berry@example.com',
+        email: 'test@test.com',
         password: realPassword
       }
       request(app)
@@ -51,7 +46,7 @@ describe('Passport: routes', function () {
 
     it('should redirect to "/login" if authentication fails', function (done) {
       var post = {
-        email: 'berry@example.com',
+        email: 'test@test.com',
         password: 'fakepassword'
       }
       request(app)
@@ -90,9 +85,4 @@ describe('Passport: routes', function () {
       })
     })
   })
-/*  afterEach(function(done){
-    customer.model.remove({}, function() {
-      done();
-    });
-  });*/
 })

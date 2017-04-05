@@ -32,4 +32,4 @@ userSchema.methods.hashPassword = usersHelper.hashPassword
 userSchema.methods.validPassword = usersHelper.validPassword
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema)
+exports.User = mongoose.model('User', userSchema)
