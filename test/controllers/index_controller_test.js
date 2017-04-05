@@ -1,22 +1,18 @@
-var path = require('path')
-var request = require('supertest')
-var file = path.resolve('server.js')
-var app = require(file)
+const request = require('supertest')
+const app = require('../../server.js')
 
-describe('Basic routes', function () {
-
-	it('should get home page', function (done) {
-
-		request(app)
-		.get('/')
-		.expect(200, /Node Authentication/, done)
-	})
-
-	it('should generate a 404', function (done) {
-		request(app)
-		.get('/does_not_exist')
-		.expect(404, /404/, done)
-	})
-
+describe('GET /', () => {
+  it('should return 200 OK', (done) => {
+    request(app)
+      .get('/')
+      .expect(200, done)
+  })
 })
 
+describe('GET /random-url', () => {
+  it('should return 404', (done) => {
+    request(app)
+      .get('/reset')
+      .expect(404, done)
+  })
+})

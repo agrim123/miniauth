@@ -1,23 +1,20 @@
-var path = require('path')
-var request = require('supertest')
-var file = path.resolve('server.js')
-var app = require(file)
+const request = require('supertest')
+const app = require('../../server.js')
 
-describe('User: routes', function () {
-
+describe('GET /profile', function () {
 	it('should not be allowed profile unless logged in', function (done) {
-		request(app)
-		.get('/profile')
-		.expect(302)
-		.expect('Location', '/')
-		.end(done)
-	})
+    request(app)
+    .get('/profile')
+    .expect(302, done)
+  })
+})
 
-	it('should render signup page', function(done) {
-		request(app)
-		.get('/signup')
-		.expect(200, done)
-	})
+describe('GET /signup', function () {
 
+  it('should return 200 OK', function (done) {
+    request(app)
+    .get('/signup')
+    .expect(200, done)
+  })
 })
 

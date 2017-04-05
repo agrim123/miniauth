@@ -16,8 +16,9 @@ mongoose.Promise = global.Promise
 var configDB = require('./config/database.js')
 
 // configuration ===============================================================
-
-mongoose.connect(configDB.db)
+if(process.env.NODE_ENV != 'test') {
+  mongoose.connect(configDB.db)
+}
 
 require('./config/passport')(passport)
 

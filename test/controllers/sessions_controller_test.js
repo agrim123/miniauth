@@ -1,23 +1,10 @@
-var path = require('path')
-var request = require('supertest')
-var file = path.resolve('server.js')
-var app = require(file)
+const request = require('supertest')
+const app = require('../../server.js')
 
-describe('Session: routes', function () {
-
-	it('should render login page', function(done) {
-		request(app)
-		.get('/login')
-		.expect(200, done)
-	})
-
-	it('should be able to logout', function(done) {
-		request(app)
-		.get('/logout')
-		.expect(302)
-		.expect('Location', '/')
-		.end(done)
-	})
-
+describe('GET /login', () => {
+  it('should return 200 OK', (done) => {
+    request(app)
+      .get('/login')
+      .expect(200, done)
+  })
 })
-
