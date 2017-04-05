@@ -24,7 +24,6 @@ describe('Passport: routes', function () {
         password:passwordHash
       }
     }, function (err,user) {
-      console.log(user)
       done()
     })
   })
@@ -55,34 +54,6 @@ describe('Passport: routes', function () {
       .expect(302)
       .expect('Location', '/login')
       .end(done)
-    })
-  })
-
-  describe('Facebook Routes', function() {
-
-    it('should require authorization', function(done) {
-      request(app)
-      .get('/auth/facebook')
-      .expect(302)
-      .expect('Location', /https:\/\/www.facebook.com\/dialog\/oauth\?response_type=code&redirect_uri=/)
-      .end(function(err, res) {
-        if (err) return done(err)
-          done()
-      })
-    })
-  })
-
-  describe('Google Routes', function() {
-
-    it('should require authorization', function(done) {
-      request(app)
-      .get('/auth/google')
-      .expect(302)
-      .expect('Location', /https:\/\/accounts.google.com\/o\/oauth2\/v2\/auth\?response_type=code&redirect_uri=/)
-      .end(function(err, res) {
-        if (err) return done(err)
-          done()
-      })
     })
   })
 })
