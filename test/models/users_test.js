@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const expect = require('chai').expect
 const sinon = require('sinon')
 require('sinon-mongoose')
@@ -6,13 +5,19 @@ require('sinon-mongoose')
 const User = require('../../app/models/user.js').User
 
 describe('User Model', () => {
+  var newUser = {
+    local: {
+      email: 'test@gmail.com',
+      password: 'root'
+    }
+  }
   it('should create a new user', (done) => {
-    const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }))
+    const UserMock = sinon.mock(new User(newUser))
     const user = UserMock.object
 
     UserMock
-      .expects('save')
-      .yields(null)
+    .expects('save')
+    .yields(null)
 
     user.save(function (err, result) {
       UserMock.verify()
@@ -23,15 +28,15 @@ describe('User Model', () => {
   })
 
   it('should return error if user is not created', (done) => {
-    const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }))
+    const UserMock = sinon.mock(new User(newUser))
     const user = UserMock.object
     const expectedError = {
       name: 'ValidationError'
     }
 
     UserMock
-      .expects('save')
-      .yields(expectedError)
+    .expects('save')
+    .yields(expectedError)
 
     user.save((err, result) => {
       UserMock.verify()
@@ -43,7 +48,7 @@ describe('User Model', () => {
   })
 
   it('should not create a user with the unique email', (done) => {
-    const UserMock = sinon.mock(User({ email: 'test@gmail.com', password: 'root' }))
+    const UserMock = sinon.mock(User(newUser))
     const user = UserMock.object
     const expectedError = {
       name: 'MongoError',
@@ -51,8 +56,8 @@ describe('User Model', () => {
     }
 
     UserMock
-      .expects('save')
-      .yields(expectedError)
+    .expects('save')
+    .yields(expectedError)
 
     user.save((err, result) => {
       UserMock.verify()
@@ -72,9 +77,9 @@ describe('User Model', () => {
     }
 
     userMock
-      .expects('findOne')
-      .withArgs({ email: 'test@gmail.com' })
-      .yields(null, expectedUser)
+    .expects('findOne')
+    .withArgs({ email: 'test@gmail.com' })
+    .yields(null, expectedUser)
 
     User.findOne({ email: 'test@gmail.com' }, (err, result) => {
       userMock.verify()
@@ -91,9 +96,9 @@ describe('User Model', () => {
     }
 
     userMock
-      .expects('remove')
-      .withArgs({ email: 'test@gmail.com' })
-      .yields(null, expectedResult)
+    .expects('remove')
+    .withArgs({ email: 'test@gmail.com' })
+    .yields(null, expectedResult)
 
     User.remove({ email: 'test@gmail.com' }, (err, result) => {
       userMock.verify()

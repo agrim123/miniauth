@@ -1,11 +1,10 @@
 'use strict'
 
 var should = require('should')
-var bcrypt   = require('bcrypt-nodejs')
 
 var users_helper = require('../../app/helpers/users_helper.js')
 
-describe('Users: helpers', () => {
+describe('Users helpers', () => {
 
   describe('#hashPassword()', () => {
     it('should return a hashed password asynchronously', (done) => {

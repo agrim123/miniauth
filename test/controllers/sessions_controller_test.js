@@ -1,10 +1,13 @@
 const request = require('supertest')
 const app = require('../../server.js')
+const chai = require('chai')
+const should = chai.should()
+const expect = chai.expect
 
-describe('GET /login', () => {
-  it('should return 200 OK', (done) => {
+describe('Sessions Controller', () => {
+  it('should render login page', (done) => {
     request(app)
-      .get('/login')
-      .expect(200, done)
+    .get('/login')
+    .expect(200, done)
   })
 })
