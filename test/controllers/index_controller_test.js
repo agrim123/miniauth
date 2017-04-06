@@ -1,18 +1,16 @@
 const request = require('supertest')
 const app = require('../../server.js')
 
-describe('GET /', () => {
-  it('should return 200 OK', (done) => {
+describe('Index Controller', () => {
+  it('should render root page', (done) => {
     request(app)
-      .get('/')
-      .expect(200, done)
+    .get('/')
+    .expect(200, done)
   })
-})
 
-describe('GET /random-url', () => {
-  it('should return 404', (done) => {
+  it('should return 404 for non-existent pages', (done) => {
     request(app)
-      .get('/random')
-      .expect(404, done)
+    .get('/random')
+    .expect(404, done)
   })
 })
