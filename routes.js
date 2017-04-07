@@ -1,4 +1,5 @@
 var isLoggedIn = require('./app/middlewares/login_middleware.js')
+var isAdmin = require('./app/middlewares/admin_middleware.js')
 
 var index = require('./app/controllers/index_controller.js')
 
@@ -20,6 +21,9 @@ module.exports = (app, passport) => {
 
   app.post('/login', sessions.create)
 
+  app.get('/admin', isLoggedIn, isAdmin, (req, res) => {
+    res.send('admin')
+  })
   // SIGNUP =================================
   // show the signup form
   app.get('/signup', users.new)
@@ -57,7 +61,7 @@ module.exports = (app, passport) => {
   app.get('/connect/facebook', users.connect_facebook)
 
   // handle the callback after facebook has authorized the user
-  app.get('/connect/facebook/callback', users.connect_facebook_callback)
+  app.get('/connect/facebook/callback', users.facebook_callback)
 
   // google ---------------------------------
 
@@ -65,7 +69,7 @@ module.exports = (app, passport) => {
   app.get('/connect/google', users.connect_google)
 
   // the callback after google has authorized the user
-  app.get('/connect/google/callback', users.connect_google_callback)
+  app.get('/connect/google/callback', users.google_callback)
   //  =========================================================================
   // UNLINK ACCOUNTS =============================================================
   // =============================================================================
