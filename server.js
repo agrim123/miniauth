@@ -16,9 +16,15 @@ mongoose.Promise = global.Promise
 var configDB = require('./config/database.js')
 
 // configuration ===============================================================
-mongoose.connect(configDB.db)
+if (process.env.NODE_ENV === 'test') {
+  mongoose.connect(configDB.db.test)
+} else {
+  mongoose.connect(configDB.db.dev)
+}
 
-require('./config/passport')(passport)
+require('./config/passport/local')(passport)
+require('./config/passport/facebook')(passport)
+require('./config/passport/google')(passport)
 
 app.use(morgan('dev'))
 app.use(cookieParser())
