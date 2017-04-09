@@ -21,6 +21,10 @@ All the tests are located in `test/` dir. You can run them using:
 $ npm test
 ```
 
+### To-Do ###
+
+- [ ] Fix passport google strategy
+- [ ] Write tests for different strategies
 
 ### References ###
 
