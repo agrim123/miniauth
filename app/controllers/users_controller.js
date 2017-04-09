@@ -14,15 +14,15 @@ module.exports = (passport) => {
       res.render('accounts/connect-local.ejs', { message: req.flash('loginMessage') })
     },
 
-    connect_local: passport.authenticate('local-signup', {
-      successRedirect: '/profile',
-      failureRedirect: '/connect/local',
-      failureFlash: true
-    }),
-
     create: passport.authenticate('local-signup', {
       successRedirect: '/profile',
       failureRedirect: '/signup',
+      failureFlash: true
+    }),
+
+    connect_local: passport.authenticate('local-signup', {
+      successRedirect: '/profile',
+      failureRedirect: '/connect/local',
       failureFlash: true
     }),
 
@@ -38,20 +38,16 @@ module.exports = (passport) => {
       failureRedirect: '/'
     }),
 
-    google_login: passport.authenticate('google', { scope: ['profile', 'email'] }),
-
-    connect_facebook: passport.authorize('facebook', { scope: 'email' }),
-
-    connect_google: passport.authorize('google', { scope: ['profile', 'email'] }),
-
-    connect_facebook_callback: passport.authorize('facebook', {
-      successRedirect: '/profile',
-      failureRedirect: '/'
+    google_login: passport.authenticate('google', { scope: [
+      'https://www.googleapis.com/auth/plus.login',
+      'https://www.googleapis.com/auth/plus.profile.emails.read']
     }),
 
-    connect_google_callback: passport.authorize('google', {
-      successRedirect: '/profile',
-      failureRedirect: '/'
+    connect_facebook: passport.authorize('facebook', { scope: ['email', 'public_profile'] }),
+
+    connect_google: passport.authenticate('google', { scope: [
+      'https://www.googleapis.com/auth/plus.login',
+      'https://www.googleapis.com/auth/plus.profile.emails.read']
     }),
 
     unlink_local: (req, res) => {
@@ -59,7 +55,9 @@ module.exports = (passport) => {
       user.local.email = undefined
       user.local.password = undefined
       user.save((err) => {
-        if (err) throw err
+        if (err) {
+          throw err
+        }
         res.redirect('/profile')
       })
     },
@@ -68,7 +66,9 @@ module.exports = (passport) => {
       var user = req.user
       user.google.token = undefined
       user.save((err) => {
-        if (err) throw err
+        if (err) {
+          throw err
+        }
         res.redirect('/profile')
       })
     },
@@ -77,7 +77,9 @@ module.exports = (passport) => {
       var user = req.user
       user.facebook.token = undefined
       user.save((err) => {
-        if (err) throw err
+        if (err) {
+          throw err
+        }
         res.redirect('/profile')
       })
     }
