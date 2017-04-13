@@ -21,7 +21,7 @@
     "morgan": "~1.8.1",
     "passport": "~0.3.2",
     "passport-facebook": "~2.1.1",
-    "passport-google-oauth": "~1.0.0",
+    "passport-google-oauth2": "~0.1.6",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.4",
     "path": "^0.12.7"
@@ -43,6 +43,8 @@
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^2.1.2",
     "mocha": "^3.2.0",
+    "mocha-mongo": "^1.0.0",
+    "passport-google-oauth": "^1.0.0",
     "rimraf": "^2.6.1",
     "should": "^11.2.1",
     "sinon": "1",
