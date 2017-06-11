@@ -1,4 +1,3 @@
-// load the things we need
 var mongoose = require('mongoose')
 
 var usersHelper = require('../../app/helpers/users_helper.js')

@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/agrim123/miniauth.svg?branch=master)](https://travis-ci.org/agrim123/miniauth)
 
-A small app written in node to get you started quickly. Includes already built authentication system( includes local, facebook and google).
+A small app written in node to get you started quickly. Includes already built authentication system (includes local, facebook and google).
 
 ### Setup ###
 
